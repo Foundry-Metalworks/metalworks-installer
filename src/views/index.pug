@@ -4,13 +4,13 @@ html(lang="en")
         meta(charset="utf-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
-        script(src='../path/to/flowbite/dist/flowbite.min.js')
         title Metalworks Installer
         link(href="./styles/style.css", rel="stylesheet")
-    body
-        h1 Metalworks Setup
-        p Drag n' Drop your Foundry zip to install FoundryVTT
+    body(class="flex flex-col h-screen gap-12 text-center mt-12")
+        div
+            h1(class="text-3xl mb-2") Metalworks Setup
+            p Drag n' Drop your Foundry zip to install FoundryVTT
         form(action="api/upload", method="POST", encType="multipart/form-data")
             label(for="file_input")
-            input(id="file_input", type="file", name="foundry", required=true)
-            button(type="submit") Upload
+            input(id="file_input", type="file", name="foundry", required=true, class="file-input w-full max-w-xs")
+            button(type="submit", class="btn btn-primary") Upload
