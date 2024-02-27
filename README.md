@@ -1,8 +1,10 @@
 ## About
 
-This project was based off of with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript).
+Simple Installer application for FoundryVTT.
 
-I changed it then to update the eslint rules, add prettier, husky, lint-staged, commitizen and conventional commits, as well as tweaking the base structure to be more to my liking.
+Requires PM2, Node >=16 and Caddy to be installed in the system.
+
+Must be run as root.
 
 ## Available Scripts
 
