@@ -19,8 +19,12 @@ const args = parse<IArgs>({
   },
 });
 
+const dotEnvPath =
+  args.env === 'development'
+    ? path.join(__dirname, `../../env/${args.env}.env`)
+    : path.join(__dirname, `../env/${args.env}.env`);
 dotenv.config({
-  path: path.join(__dirname, `../env/${args.env}.env`),
+  path: dotEnvPath,
 });
 
 const variables = {

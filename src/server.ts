@@ -10,6 +10,7 @@ import { HttpStatusCodes } from '@/constants/http';
 import { NodeEnvs } from '@/constants/misc';
 import { RouteError } from '@/types/errors';
 import routes from './routes';
+import path from 'path';
 
 // **** Variables **** //
 
@@ -32,7 +33,13 @@ if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
 }
 
 // Routes
-app.use('api', routes);
+app.use('/api', routes);
+
+// Views
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', (_req, res) => res.render('index'));
 
 // Add error handler
 app.use(
