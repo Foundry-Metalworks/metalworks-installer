@@ -30,6 +30,7 @@ dotenv.config({
 const variables = {
   NodeEnv: process.env.NODE_ENV ?? '',
   Port: process.env.PORT ?? 0,
+  Name: process.env.DOMAIN_NAME,
 } as const;
 
 export default variables;
