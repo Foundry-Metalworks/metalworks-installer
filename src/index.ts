@@ -9,6 +9,7 @@ import {
   stopFoundry,
 } from '@/services/foundry';
 import { saveAndDestroyDroplet } from '@/services/digitalocean';
+import shellExec from 'shell-exec';
 
 // Start FoundryVTT
 let idleCount = 0;
@@ -30,6 +31,7 @@ if (isFoundryInstalled()) {
 
 // Start ExpressJS
 const SERVER_START_MSG = 'Express server started on port: ' + EnvVars.Port.toString();
+shellExec(`ufw allow ${EnvVars.Port}/tcp`).then(() => logger.info('Opened Port'));
 server.listen(EnvVars.Port, () => {
   logger.info(SERVER_START_MSG);
 });

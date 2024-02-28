@@ -12,7 +12,8 @@ The following script will get you set up for this to work.
 
 ```
 # Setup Node prerequisites
-curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install --lts
       
 # Setup Caddy prerequisites
 apt install -y debian-keyring debian-archive-keyring apt-transport-https
@@ -22,8 +23,8 @@ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' |
 sudo tee /etc/apt/sources.list.d/caddy-stable.list
 apt update
       
-# Install Caddy and Node
-apt install -y libssl-dev unzip nodejs caddy
+# Install Caddy and
+apt install -y libssl-dev unzip caddy
 
 # Install PM2 for daemon management
 npm install pm2@latest -g
@@ -33,11 +34,12 @@ npm install yarn -g
 
 # Clone repo & install
 cd ~
-git clone git@github.com:Foundry-Metalworks/metalworks-installer.git
+git clone https://github.com/Foundry-Metalworks/metalworks-installer.git
 cd ./metalworks-installer
 yarn install
 yarn build
 sudo pm2 start dist/index.js --name foundry -- --env=production
+sudo pm2 save
 sudo pm2 startup
 ```
 

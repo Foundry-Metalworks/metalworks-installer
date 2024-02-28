@@ -12,7 +12,7 @@
     "prepare": "husky",
     "commit": "cz",
     "tailwind:css": "npx tailwindcss -i src/public/styles/tailwind.css -o src/public/styles/style.css",
-    "copy-files": "copyfiles -u 1 src/**/*.pug src/**/*.css dist/",
+    "copy-files": "copyfiles -u 1 src/public/**/* src/views/*.pug dist/",
     "release": "standard-version"
   },
   "nodemonConfig": {
