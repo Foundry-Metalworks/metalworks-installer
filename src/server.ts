@@ -38,8 +38,10 @@ app.use('/api', routes);
 // Views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.use(express.static(path.join(__dirname, '../public')));
-app.get('/', (_req, res) => res.render('index'));
+app.use(express.static(path.join(__dirname, './public')));
+app.get('/', (_req, res) => {
+  res.render('index');
+});
 
 // Add error handler
 app.use(

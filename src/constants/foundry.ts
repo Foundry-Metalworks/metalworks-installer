@@ -1,10 +1,10 @@
 import { homedir } from 'os';
 import env from '@/constants/env';
+import fs from 'fs';
 
 const homeDir = homedir();
-
 const hostName = `${env.Name}.dnd.tenzin.live`;
-
+const isFoundryInstalled = fs.existsSync(`${homeDir}/foundry/resources/app/main.js`);
 const caddySettings = `
 ${hostName} {
   @http {
@@ -14,7 +14,6 @@ ${hostName} {
   reverse_proxy localhost:30000
 }
 `;
-
 const foundrySettings = {
   dataPath: `${homeDir}/foundry`,
   compressStatic: true,
@@ -38,4 +37,4 @@ const foundrySettings = {
   serviceConfig: null,
 };
 
-export { hostName, caddySettings, foundrySettings };
+export { homeDir, isFoundryInstalled, hostName, caddySettings, foundrySettings };

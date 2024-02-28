@@ -19,10 +19,7 @@ const args = parse<IArgs>({
   },
 });
 
-const dotEnvPath =
-  args.env === 'development'
-    ? path.join(__dirname, `../../env/${args.env}.env`)
-    : path.join(__dirname, `../env/${args.env}.env`);
+const dotEnvPath = path.join(__dirname, `../../env/${args.env}.env`);
 dotenv.config({
   path: dotEnvPath,
 });
@@ -30,7 +27,8 @@ dotenv.config({
 const variables = {
   NodeEnv: process.env.NODE_ENV ?? '',
   Port: process.env.PORT ?? 0,
-  Name: process.env.DOMAIN_NAME,
+  Name: process.env.DOMAIN_NAME ?? '',
+  DigitalOceanKey: process.env.DIGITALOCEAN_API_KEY ?? '',
 } as const;
 
 export default variables;
