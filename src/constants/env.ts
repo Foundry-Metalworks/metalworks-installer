@@ -3,6 +3,7 @@
 import * as dotenv from 'dotenv';
 import { parse } from 'ts-command-line-args';
 import path from 'path';
+import * as process from 'process';
 
 interface IArgs {
   env: string;
@@ -29,6 +30,7 @@ const variables = {
   Port: process.env.PORT ?? 0,
   Name: process.env.DOMAIN_NAME ?? '',
   DigitalOceanKey: process.env.DIGITALOCEAN_API_KEY ?? '',
+  ClerkKey: process.env.CLERK_SECRET_KEY ?? '',
 } as const;
 
 export default variables;
