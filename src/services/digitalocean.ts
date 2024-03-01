@@ -2,14 +2,18 @@ import axios from 'axios';
 import { createApiClient } from 'dots-wrapper';
 import env from '@/constants/env';
 import { IAction } from 'dots-wrapper/dist/action';
+import { RouteError } from '@/types/errors';
+import { HttpStatusCodes } from '@/constants/http';
 
 const digitalOceanAPI = createApiClient({ token: env.DigitalOceanKey });
 const metadataAPI = axios.create({
   baseURL: 'http://169.254.169.254/metadata/v1',
 });
 
-let droplet_id = -1;
-dropletID().then((val) => (droplet_id = val));
+let droplet_id = env.TestDropletId;
+if (env.NodeEnv === 'production') {
+  dropletID().then((val) => (droplet_id = val));
+}
 
 async function dropletID(): Promise<number> {
   return Number(await metadataAPI.get('id'));
@@ -33,12 +37,10 @@ async function destroyDroplet() {
 
 async function waitForActionComplete(action: IAction) {
   if (action.status === 'errored') {
-    const retryResult = await digitalOceanAPI.droplet.snapshotDroplet({ droplet_id });
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        waitForActionComplete(retryResult.data.action).then(resolve);
-      }, 5000);
-    });
+    throw new RouteError(
+      HttpStatusCodes.INTERNAL_SERVER_ERROR,
+      'Failed to complete action: ' + action.type,
+    );
   } else if (action.status === 'in-progress') {
     const statusResult = await digitalOceanAPI.action.getAction({ action_id: action.id });
     await new Promise((resolve) => {

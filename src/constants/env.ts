@@ -27,10 +27,11 @@ dotenv.config({
 
 const variables = {
   NodeEnv: process.env.NODE_ENV ?? '',
-  Port: process.env.PORT ?? 0,
+  Port: Number(process.env.PORT) ?? 0,
   Name: process.env.DOMAIN_NAME ?? '',
   DigitalOceanKey: process.env.DIGITALOCEAN_API_KEY ?? '',
-  ClerkKey: process.env.CLERK_SECRET_KEY ?? '',
+  MetalworksPublicKey: process.env.METALWORKS_PUBLIC_KEY ?? '',
+  TestDropletId: Number(process.env.TEST_DROPLET_ID) ?? 0,
 } as const;
 
 export default variables;
