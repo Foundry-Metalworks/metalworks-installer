@@ -11,6 +11,8 @@ import { NodeEnvs } from '@/constants/misc';
 import { RouteError } from '@/types/errors';
 import routes from './routes';
 import path from 'path';
+import swaggerUI from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 
 // **** Variables **** //
 
@@ -32,6 +34,8 @@ if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
   app.use(helmet());
 }
 
+// Swagger
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 // Routes
 app.use('/api', routes);
 

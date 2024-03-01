@@ -43,7 +43,7 @@ const onUpload: RequestHandler = async (req, res) => {
 
   // Return
   logger.info('Successfully installed FoundryVTT');
-  return res.redirect(`https://${hostName}`);
+  return res.status(HttpStatusCodes.SEE_OTHER).redirect(`https://${hostName}`);
 };
 
 export { onUpload };

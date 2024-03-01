@@ -1,15 +1,16 @@
 import { RequestHandler } from 'express';
 import * as foundryService from '@/services/foundry';
 import { FoundryStatus } from '@/types/foundry';
+import { HttpStatusCodes } from '@/constants/http';
 
 const startFoundry: RequestHandler = (_req, res) => {
   foundryService.startFoundry();
-  return res.sendStatus(200);
+  return res.sendStatus(HttpStatusCodes.OK);
 };
 
 const stopFoundry: RequestHandler = (_req, res) => {
   foundryService.stopFoundry();
-  return res.sendStatus(200);
+  return res.sendStatus(HttpStatusCodes.OK);
 };
 
 const getFoundryStatus: RequestHandler = (_req, res) => {
@@ -19,7 +20,7 @@ const getFoundryStatus: RequestHandler = (_req, res) => {
       foundryStatus = FoundryStatus.on;
     } else foundryStatus = FoundryStatus.off;
   }
-  return res.status(200).send({ status: foundryStatus });
+  return res.status(HttpStatusCodes.OK).send({ status: foundryStatus });
 };
 
 export { startFoundry, stopFoundry, getFoundryStatus };

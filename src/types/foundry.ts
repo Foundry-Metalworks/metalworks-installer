@@ -1,7 +1,7 @@
 enum FoundryStatus {
   on = 'on',
   off = 'off',
-  uninstalled = 'uninstalled',
+  uninstalled = 'setup',
 }
 
 export { FoundryStatus };

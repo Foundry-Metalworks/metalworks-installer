@@ -8,6 +8,7 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "outDir": "./dist",
     "baseUrl": ".",
+    "resolveJsonModule": true,
     "paths": {
       "@/*": ["src/*"] // enables us to use @/..
     }

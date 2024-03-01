@@ -10,7 +10,7 @@ const stopDroplet: RequestHandler = async (_req, res) => {
 const saveDroplet: RequestHandler = async (_req, res) => {
   const action = await digitalOceanService.snapshotDroplet();
   await digitalOceanService.waitForActionComplete(action);
-  res.sendStatus(HttpStatusCodes.OK);
+  res.status(HttpStatusCodes.OK).send({ snapshotId: action.resource_id });
 };
 
 export { stopDroplet, saveDroplet };

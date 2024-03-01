@@ -9,7 +9,6 @@ const router = express.Router();
 
 const upload = fileUpload();
 router.post('/upload', upload, onUpload);
-
 router.use('/foundry', validateToken, foundryRouter);
 router.use('/droplet', validateToken, dropletRouter);
 

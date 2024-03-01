@@ -6,23 +6,21 @@
     "lint": "npx eslint --ext .ts --fix src/",
     "format": "npx prettier . --write",
     "clean": "npx rimraf dist",
-    "build": "yarn tailwind:css && npx tsc && tsc-alias && yarn copy-files",
+    "build": "yarn swagger && yarn tailwind:css && npx tsc && tsc-alias && yarn copy-files",
     "start": "node dist/index.js --env=production",
-    "dev": "concurrently \"yarn tailwind:css --watch\" \"nodemon\"",
+    "dev": "concurrently \"yarn tailwind:css --watch\" \"nodemon\" \"yarn swagger\"",
     "prepare": "husky",
     "commit": "cz",
     "tailwind:css": "npx tailwindcss -i src/public/styles/tailwind.css -o src/public/styles/style.css",
-    "copy-files": "copyfiles -u 1 src/public/**/* src/views/*.pug dist/",
-    "release": "standard-version"
+    "copy-files": "copyfiles -u 1 src/swagger.json src/public/**/* src/views/*.pug dist/",
+    "release": "standard-version",
+    "swagger": "npx ts-node .swagger.ts"
   },
   "nodemonConfig": {
     "watch": [
       "src"
     ],
     "ext": "ts,html,pug",
-    "ignore": [
-      "src/public"
-    ],
     "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
   },
   "engines": {
@@ -46,6 +44,7 @@
     "pug": "^3.0.2",
     "shell-exec": "^1.1.2",
     "standard-version": "^9.5.0",
+    "swagger-ui-express": "^5.0.0",
     "ts-command-line-args": "^2.5.1"
   },
   "devDependencies": {
@@ -61,6 +60,8 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.11.20",
     "@types/npmlog": "^7.0.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
     "autoprefixer": "^10.4.17",
@@ -83,6 +84,7 @@
     "postcss-cli": "^11.0.0",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
+    "swagger-autogen": "^2.23.7",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.8",
