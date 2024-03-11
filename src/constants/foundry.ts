@@ -7,10 +7,6 @@ const hostName = `${env.Name}.dnd.tenzin.live`;
 const isFoundryInstalled = fs.existsSync(`${homeDir}/foundry/resources/app/main.js`);
 const caddySettings = `
 api.${hostName} {
-  @http {
-    protocol http
-  }
-  redir @http https://api.${hostName}
   reverse_proxy localhost:8081
 }
 ${hostName} {

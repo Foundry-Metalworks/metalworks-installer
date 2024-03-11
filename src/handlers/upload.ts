@@ -38,7 +38,7 @@ const onUpload: RequestHandler = async (req, res) => {
     fs.mkdirSync('/etc/caddy');
   }
   fs.writeFileSync('/etc/caddy/Caddyfile', caddySettings);
-  await shellExec('systemctl restart caddy');
+  await shellExec('systemctl reload caddy');
   logger.info('Configured Caddy reverse proxy');
 
   // Return
