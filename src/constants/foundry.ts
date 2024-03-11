@@ -10,7 +10,7 @@ api.${hostName} {
   @http {
     protocol http
   }
-  redir @http https://${hostName}
+  redir @http https://api.${hostName}
   reverse_proxy localhost:8081
 }
 ${hostName} {
