@@ -4,7 +4,7 @@ import { HttpStatusCodes } from '@/constants/http';
 import { caddySettings, foundrySettings, hostName, isFoundryInstalled } from '@/constants/foundry';
 import { homedir } from 'os';
 import fs from 'fs';
-import { emptyDirSync, writeJsonSync } from 'fs-extra';
+import { createFileSync, emptyDirSync, writeJsonSync } from 'fs-extra';
 import AdmZip from 'adm-zip';
 import logger from 'jet-logger';
 import shellExec from 'shell-exec';
@@ -30,6 +30,7 @@ const onUpload: RequestHandler = async (req, res) => {
   logger.info('Extracted FoundryVTT');
 
   // Settings
+  createFileSync(`${homeDir}/foundrydata/Config/options.json`);
   writeJsonSync(`${homeDir}/foundrydata/Config/options.json`, foundrySettings);
   logger.info('Updated Foundry settings');
 
