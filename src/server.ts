@@ -37,7 +37,7 @@ if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
 // Swagger
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 // Routes
-app.use('/api', routes);
+app.use('/api/v1', routes);
 
 // Views
 app.set('views', path.join(__dirname, 'views'));
