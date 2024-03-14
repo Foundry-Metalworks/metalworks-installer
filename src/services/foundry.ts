@@ -17,7 +17,7 @@ function forkFoundry(): ChildProcess {
 
 async function isFoundryIdle(): Promise<boolean> {
   const result = await shellExec('netstat -ant | grep 30000 | grep ESTABLISHED | wc -l');
-  return !!Number(result.stdout);
+  return !Number(result.stdout);
 }
 
 function startFoundry() {
