@@ -11,7 +11,10 @@ function submitUploadData(data) {
     type: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(data),
-    error: function () {
+    success: (data) => {
+      window.location.href = data;
+    },
+    error: () => {
       $('span').removeClass('text-accent');
       $('span').addClass('text-secondary');
       $('span').text('Failed to install FoundryVTT');

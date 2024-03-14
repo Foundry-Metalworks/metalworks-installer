@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { RouteError } from '@/types/errors';
 import { HttpStatusCodes } from '@/constants/http';
-import { caddySettings, foundrySettings, hostName, isFoundryInstalled } from '@/constants/foundry';
+import { caddySettings, foundrySettings, isFoundryInstalled } from '@/constants/foundry';
 import { homedir } from 'os';
 import fs from 'fs';
 import { createFileSync, emptyDirSync, writeJsonSync } from 'fs-extra';
@@ -10,6 +10,7 @@ import logger from 'jet-logger';
 import shellExec from 'shell-exec';
 import axios from 'axios';
 import { startFoundry } from '@/services/foundry';
+import env from '@/constants/env';
 
 const onUpload: RequestHandler = async (req, res) => {
   const url = req.body.url as string;
@@ -60,7 +61,7 @@ const onUpload: RequestHandler = async (req, res) => {
   // Return
   logger.info('Successfully installed FoundryVTT');
   startFoundry();
-  return res.status(HttpStatusCodes.SEE_OTHER).redirect(`https://${hostName}`);
+  return res.send(`https://${env.Name}.dnd.tenzin.live`);
 };
 
 export { onUpload };
