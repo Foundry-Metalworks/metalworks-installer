@@ -21,13 +21,14 @@ const onUpload: RequestHandler = async (req, res) => {
   const { data, status } = await axios.get(url, {
     responseType: 'arraybuffer',
     timeout: 120000,
+    maxContentLength: 400000000,
     onDownloadProgress: (progressEvent) => {
       logger.info('progress: ' + progressEvent.progress);
     },
   });
 
   if (!data || status !== HttpStatusCodes.OK.valueOf()) {
-    throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'Single zip file foundry is required');
+    throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'Failed to download file');
   }
   try {
     new AdmZip(data);
@@ -44,6 +45,11 @@ const onUpload: RequestHandler = async (req, res) => {
     fs.mkdirSync(`${homeDir}/foundrydata`);
   }
   new AdmZip(data).extractAllTo(`${homeDir}/foundry`);
+
+  if (!isFoundryInstalled()) {
+    fs.rmdirSync(`${homeDir}/foundry`);
+    throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'Invalid FoundryVTT ZIP');
+  }
   logger.info('Extracted FoundryVTT');
 
   // Settings
