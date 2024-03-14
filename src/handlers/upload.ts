@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { RouteError } from '@/types/errors';
 import { HttpStatusCodes } from '@/constants/http';
-import { caddySettings, foundrySettings, isFoundryInstalled } from '@/constants/foundry';
+import { caddySettings, foundrySettings } from '@/constants/foundry';
 import { homedir } from 'os';
 import fs from 'fs';
 import { createFileSync, emptyDirSync, writeJsonSync } from 'fs-extra';
@@ -9,10 +9,14 @@ import AdmZip from 'adm-zip';
 import logger from 'jet-logger';
 import shellExec from 'shell-exec';
 import axios from 'axios';
-import { startFoundry } from '@/services/foundry';
+import { isFoundryInstalled, startFoundry } from '@/services/foundry';
 import env from '@/constants/env';
 
 const onUpload: RequestHandler = async (req, res) => {
+  if (isFoundryInstalled()) {
+    throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'FoundryVTT is already installed');
+  }
+
   const url = req.body.url as string;
   const { data, status } = await axios.get(url, {
     responseType: 'arraybuffer',
@@ -29,9 +33,6 @@ const onUpload: RequestHandler = async (req, res) => {
     new AdmZip(data);
   } catch (e) {
     throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'Single zip file foundry is required');
-  }
-  if (isFoundryInstalled) {
-    throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'FoundryVTT is already installed');
   }
 
   // Extract Foundry
