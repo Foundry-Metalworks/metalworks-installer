@@ -12,12 +12,15 @@ function submitUploadData(data) {
     contentType: 'application/json',
     data: JSON.stringify(data),
     success: (data) => {
-      window.location.href = data;
+      $('#error').text('');
+      $('#success').text('Redirecting to FoundryVTT...');
+      $('#pending').text('');
+      setTimeout(() => (window.location.href = data), 5000);
     },
-    error: () => {
-      $('span').removeClass('text-accent');
-      $('span').addClass('text-secondary');
-      $('span').text('Failed to install FoundryVTT');
+    error: ({ responseJSON: { error } }) => {
+      $('#success').text('');
+      $('#pending').text('');
+      $('#error').text(`Error: ${JSON.stringify(error)}`);
     },
   });
 }
@@ -26,8 +29,9 @@ $(document).ready(function () {
     e.preventDefault();
     const data = formToJson();
     submitUploadData(data);
-    $('span').removeClass('text-secondary');
-    $('span').addClass('text-accent');
-    $('span').text('FoundryVTT install in progress. This may take a minute...');
+
+    $('#error').text('');
+    $('#success').text('');
+    $('#pending').text('FoundryVTT install in progress. This may take a minute...');
   });
 });
