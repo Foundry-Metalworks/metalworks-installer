@@ -12,7 +12,7 @@
     "prepare": "husky",
     "commit": "cz",
     "tailwind:css": "npx tailwindcss -i src/public/styles/tailwind.css -o src/public/styles/style.css",
-    "copy-files": "copyfiles -u 1 src/swagger.json src/public/**/* src/views/*.pug dist/",
+    "copy-files": "copyfiles -u 1 src/swagger.json src/public/**/* src/public/* dist/",
     "release": "standard-version",
     "swagger": "npx ts-node .swagger.ts"
   },
@@ -20,7 +20,7 @@
     "watch": [
       "src"
     ],
-    "ext": "ts,html,pug",
+    "ext": "ts,html",
     "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
   },
   "engines": {
@@ -41,7 +41,6 @@
     "jsonfile": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "pug": "^3.0.2",
     "shell-exec": "^1.1.2",
     "standard-version": "^9.5.0",
     "swagger-ui-express": "^5.0.0",
