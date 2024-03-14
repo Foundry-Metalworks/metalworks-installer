@@ -24,6 +24,25 @@ async function snapshotDroplet() {
   return snapshotResult.data.action;
 }
 
+async function deleteOldestSnapshot() {
+  const {
+    data: { snapshots },
+  } = await digitalOceanAPI.snapshot.listSnapshots({
+    resource_type: 'droplet',
+  });
+  const oldest = snapshots
+    .filter((s) => s.tags.includes('dnd'))
+    .sort((a, b) => {
+      const dateA = Date.parse(a.created_at);
+      const dateB = Date.parse(b.created_at);
+      return dateA - dateB;
+    })
+    .pop();
+  await digitalOceanAPI.snapshot.deleteSnapshot({
+    snapshot_id: oldest?.id as string,
+  });
+}
+
 async function shutdownDroplet() {
   const shutdownResult = await digitalOceanAPI.droplet.shutdownDroplet({ droplet_id });
   return shutdownResult.data.action;
@@ -57,6 +76,7 @@ async function saveAndDestroyDroplet() {
   const snapshotAction = await snapshotDroplet();
   await waitForActionComplete(snapshotAction);
   await destroyDroplet();
+  await deleteOldestSnapshot();
 }
 
 export {
@@ -65,4 +85,5 @@ export {
   destroyDroplet,
   saveAndDestroyDroplet,
   waitForActionComplete,
+  deleteOldestSnapshot,
 };
