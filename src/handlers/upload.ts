@@ -8,11 +8,26 @@ import { createFileSync, emptyDirSync, writeJsonSync } from 'fs-extra';
 import AdmZip from 'adm-zip';
 import logger from 'jet-logger';
 import shellExec from 'shell-exec';
+import axios from 'axios';
+import { startFoundry } from '@/services/foundry';
 
 const onUpload: RequestHandler = async (req, res) => {
-  const file = req.files?.foundry ?? undefined;
-  if (!file || 'length' in file) {
-    throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'Single file foundry is required');
+  const url = req.body.url as string;
+  const { data, status } = await axios.get(url, {
+    responseType: 'arraybuffer',
+    timeout: 120000,
+    onDownloadProgress: (progressEvent) => {
+      logger.info('progress: ' + progressEvent.progress);
+    },
+  });
+
+  if (!data || status !== HttpStatusCodes.OK.valueOf()) {
+    throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'Single zip file foundry is required');
+  }
+  try {
+    new AdmZip(data);
+  } catch (e) {
+    throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'Single zip file foundry is required');
   }
   if (isFoundryInstalled) {
     throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'FoundryVTT is already installed');
@@ -26,7 +41,7 @@ const onUpload: RequestHandler = async (req, res) => {
   if (!fs.existsSync(`${homeDir}/foundrydata`)) {
     fs.mkdirSync(`${homeDir}/foundrydata`);
   }
-  new AdmZip(file.data).extractAllTo(`${homeDir}/foundry`);
+  new AdmZip(data).extractAllTo(`${homeDir}/foundry`);
   logger.info('Extracted FoundryVTT');
 
   // Settings
@@ -44,6 +59,7 @@ const onUpload: RequestHandler = async (req, res) => {
 
   // Return
   logger.info('Successfully installed FoundryVTT');
+  startFoundry();
   return res.status(HttpStatusCodes.SEE_OTHER).redirect(`https://${hostName}`);
 };
 

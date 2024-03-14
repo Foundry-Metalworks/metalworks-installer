@@ -30,7 +30,6 @@ const variables = {
   Port: Number(process.env.PORT) ?? 0,
   Name: process.env.DOMAIN_NAME ?? '',
   DigitalOceanKey: process.env.DIGITALOCEAN_API_KEY ?? '',
-  MetalworksPublicKey: process.env.METALWORKS_PUBLIC_KEY ?? '',
   TestDropletId: Number(process.env.TEST_DROPLET_ID) ?? 0,
 } as const;
 

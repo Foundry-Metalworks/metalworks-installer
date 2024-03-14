@@ -6,7 +6,7 @@ class RouteError extends Error {
   public constructor(statusCode: number, message: string, stack?: unknown) {
     super(message);
     this.name = 'RouteError';
-    this.stack = JSON.stringify(stack);
+    this.stack = stack as string;
     this.statusCode = statusCode;
   }
 }

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Metalworks Installer</title>
+    <link
+      href="./styles/style.css"
+      rel="stylesheet" />
+    <script src="./scripts/jquery-3.7.1.min.js"></script>
+    <script>
+      function formToJson() {
+        const array = $('form').serializeArray(); // Encodes the set of form elements as an array of names and values.
+        const json = {};
+        $.each(array, function () {
+          json[this.name] = this.value || '';
+        });
+        return json;
+      }
+      function submitUploadData(data) {
+        return $.ajax('api/v1/upload', {
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+          error: function () {
+            $('span').removeClass('text-accent');
+            $('span').addClass('text-secondary');
+            $('span').text('Failed to install FoundryVTT');
+          },
+        });
+      }
+      $(document).ready(function () {
+        $('form').submit(function (e) {
+          e.preventDefault();
+          const data = formToJson();
+          submitUploadData(data);
+          $('span').removeClass('text-secondary');
+          $('span').addClass('text-accent');
+          $('span').text('FoundryVTT install in progress. This may take a minute...');
+        });
+      });
+    </script>
+  </head>
+  <body class="h-screen w-screen pt-32">
+    <div class="flex flex-col items-center gap-32 w-full">
+      <div class="prose">
+        <img
+          class="mx-auto"
+          alt="FoundryVTT logo"
+          src="./img/foundry.png"
+          width="128" />
+        <h1 class="mx-auto text-center">Metalworks Setup</h1>
+      </div>
+      <form class="flex flex-col max-w-sm gap-6">
+        <div class="relative">
+          <label
+            class="text-primary"
+            for="url">
+            <a
+              target="_blank"
+              href="https://foundryvtt.com/auth/login/">
+              FoundryVTT URL
+            </a>
+          </label>
+          <input
+            id="url"
+            name="url"
+            type="text"
+            class="input input-bordered w-full"
+            placeholder="https://foundryvtt.s3.amazonaws.com/releases/11.315/FoundryVTT-11.315.zip?AWSAccessKeyId=AKIA2KJE5YZ3BCQQ6DH3&Signature=ljvRoMNb0oEUVsbtQLuAGPzh4GU%3D&Expires=1710396423" />
+        </div>
+        <button
+          class="btn btn-primary w-full"
+          type="submit">
+          Upload
+        </button>
+        <span class="text-center"> </span>
+      </form>
+    </div>
+  </body>
+</html>

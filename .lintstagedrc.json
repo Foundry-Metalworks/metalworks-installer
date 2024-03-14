@@ -1,4 +1,4 @@
 {
   "*.ts": ["eslint --quiet --fix"],
-  "*.json": ["prettier --write --ignore-unknown"]
+  "*.{html|json}": ["prettier --write --ignore-unknown"]
 }

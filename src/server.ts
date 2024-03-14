@@ -40,12 +40,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use('/api/v1', routes);
 
 // Views
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, './public')));
-app.get('/', (_req, res) => {
-  res.render('index');
-});
 
 // Add error handler
 app.use(
@@ -63,7 +58,7 @@ app.use(
     if (err instanceof RouteError) {
       status = err.statusCode;
     }
-    return res.status(status).json({ error: err.message });
+    return res.status(status).json({ error: err.message, stack: err.stack });
   },
 );
 
