@@ -4,6 +4,7 @@ import env from '@/constants/env';
 import { IAction } from 'dots-wrapper/dist/action';
 import { RouteError } from '@/types/errors';
 import { HttpStatusCodes } from '@/constants/http';
+import logger from 'jet-logger';
 
 const digitalOceanAPI = createApiClient({ token: env.DigitalOceanKey });
 const metadataAPI = axios.create({
@@ -16,7 +17,9 @@ if (env.NodeEnv === 'production') {
 }
 
 async function dropletID(): Promise<number> {
-  return Number(await metadataAPI.get('id'));
+  const result = await metadataAPI.get('id');
+  logger.info('Droplet ID: ' + JSON.stringify(result.data));
+  return Number(result.data);
 }
 
 async function snapshotDroplet() {
