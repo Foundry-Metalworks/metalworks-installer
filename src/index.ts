@@ -26,13 +26,13 @@ if (isFoundryInstalled()) {
         logger.info('FoundryVTT is not idle. Resetting idle time');
         idleCount = 0;
       }
-      if (idleCount >= 1) {
+      if (idleCount >= 60) {
         logger.info('FoundryVTT idle too long. Shutting down...');
         stopFoundry();
         await saveAndDestroyDroplet();
       }
     }
-  }, 6000);
+  }, 60000);
 }
 
 // Start ExpressJS
