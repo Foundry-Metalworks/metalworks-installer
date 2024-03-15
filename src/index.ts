@@ -18,15 +18,21 @@ if (isFoundryInstalled()) {
   logger.info('Foundry server started on port 30000');
   setInterval(async () => {
     if (isFoundryRunning()) {
+      logger.info('Checking if FoundryVTT is idle..');
       if (await isFoundryIdle()) {
+        logger.info(`FoundryVTT is idle. ${60 - idleCount} more idle checks until shutdown`);
         ++idleCount;
+      } else {
+        logger.info('FoundryVTT is not idle. Resetting idle time');
+        idleCount = 0;
       }
-      if (idleCount >= 60) {
+      if (idleCount >= 1) {
+        logger.info('FoundryVTT idle too long. Shutting down...');
         stopFoundry();
         await saveAndDestroyDroplet();
       }
     }
-  }, 60000);
+  }, 6000);
 }
 
 // Start ExpressJS

@@ -54,8 +54,11 @@ async function destroyDroplet() {
   return (destroyResult.data as any).action as IAction;
 }
 
+let _isActionPending = false;
 async function waitForActionComplete(action: IAction) {
+  _isActionPending = true;
   if (action.status === 'errored') {
+    _isActionPending = false;
     throw new RouteError(
       HttpStatusCodes.INTERNAL_SERVER_ERROR,
       'Failed to complete action: ' + action.type,
@@ -64,10 +67,17 @@ async function waitForActionComplete(action: IAction) {
     const statusResult = await digitalOceanAPI.action.getAction({ action_id: action.id });
     await new Promise((resolve) => {
       setTimeout(() => {
-        waitForActionComplete(statusResult.data.action).then(resolve);
+        waitForActionComplete(statusResult.data.action).then((data) => {
+          _isActionPending = false;
+          resolve(data);
+        });
       }, 5000);
     });
   }
+}
+
+function isActionPending() {
+  return _isActionPending;
 }
 
 async function saveAndDestroyDroplet() {
@@ -86,4 +96,5 @@ export {
   saveAndDestroyDroplet,
   waitForActionComplete,
   deleteOldestSnapshot,
+  isActionPending,
 };

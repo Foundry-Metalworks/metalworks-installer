@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import * as foundryService from '@/services/foundry';
+import * as digitalOceanService from '@/services/digitalocean';
 import { FoundryStatus } from '@/types/foundry';
 import { HttpStatusCodes } from '@/constants/http';
 
@@ -17,10 +18,12 @@ const getFoundryStatus: RequestHandler = (_req, res) => {
   let foundryStatus: FoundryStatus = FoundryStatus.uninstalled;
   if (foundryService.isFoundryInstalled()) {
     if (foundryService.isFoundryRunning()) {
-      foundryStatus = FoundryStatus.on;
+      if (digitalOceanService.isActionPending()) {
+        foundryStatus = FoundryStatus.busy;
+      } else foundryStatus = FoundryStatus.on;
     } else foundryStatus = FoundryStatus.off;
   }
-  return res.status(HttpStatusCodes.OK).send({ status: foundryStatus });
+  return res.status(HttpStatusCodes.OK).send(foundryStatus);
 };
 
 export { startFoundry, stopFoundry, getFoundryStatus };
