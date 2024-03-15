@@ -7,7 +7,7 @@ function formToJson() {
   return json;
 }
 function submitUploadData(data) {
-  return $.ajax('api/v1/upload', {
+  return $.ajax('api/v1/setup', {
     type: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(data),
