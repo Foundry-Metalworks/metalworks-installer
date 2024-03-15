@@ -30,6 +30,8 @@ async function deleteOldestSnapshot() {
   } = await digitalOceanAPI.snapshot.listSnapshots({
     resource_type: 'droplet',
   });
+  if (!snapshots.length) return;
+
   const oldest = snapshots
     .filter((s) => s.tags.includes('dnd'))
     .sort((a, b) => {
