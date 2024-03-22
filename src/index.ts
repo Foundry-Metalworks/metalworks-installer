@@ -8,7 +8,6 @@ import {
   startFoundry,
   stopFoundry,
 } from '@/services/foundry';
-import { saveAndDestroyDroplet } from '@/services/digitalocean';
 import shellExec from 'shell-exec';
 
 // Start FoundryVTT
@@ -29,7 +28,7 @@ if (isFoundryInstalled()) {
       if (idleCount >= 60) {
         logger.info('FoundryVTT idle too long. Shutting down...');
         stopFoundry();
-        await saveAndDestroyDroplet();
+        // TODO : Shutdown self
       }
     }
   }, 60000);
