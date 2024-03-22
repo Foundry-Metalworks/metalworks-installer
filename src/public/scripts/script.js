@@ -15,7 +15,7 @@ function submitUploadData(data) {
       $('#error').text('');
       $('#success').text('Redirecting to FoundryVTT...');
       $('#pending').text('');
-      setTimeout(() => (window.location.href = data), 5000);
+      setTimeout(() => window.location.assign(data), 7000);
     },
     error: ({ responseJSON: { error } }) => {
       $('#success').text('');
