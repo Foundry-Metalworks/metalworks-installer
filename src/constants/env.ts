@@ -29,8 +29,9 @@ const variables = {
   NodeEnv: process.env.NODE_ENV ?? '',
   Port: Number(process.env.PORT) ?? 0,
   Name: process.env.DOMAIN_NAME ?? '',
-  DigitalOceanKey: process.env.DIGITALOCEAN_API_KEY ?? '',
   TestDropletId: Number(process.env.TEST_DROPLET_ID) ?? 0,
+  MetalworksUrl: process.env.METALWORKS_URL ?? '',
+  GroupToken: process.env.GROUP_TOKEN ?? '',
 } as const;
 
 export default variables;

@@ -37,8 +37,10 @@ function startFoundry() {
 }
 
 function stopFoundry() {
-  foundryInstance?.kill();
-  foundryStatus = 'off';
+  if (isFoundryRunning()) {
+    foundryInstance?.kill();
+    foundryStatus = 'off';
+  }
 }
 
 function isFoundryRunning() {

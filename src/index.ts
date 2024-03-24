@@ -9,6 +9,7 @@ import {
   stopFoundry,
 } from '@/services/foundry';
 import shellExec from 'shell-exec';
+import { autoShutdown } from '@/services/metalworks';
 
 // Start FoundryVTT
 let idleCount = 0;
@@ -28,7 +29,7 @@ if (isFoundryInstalled()) {
       if (idleCount >= 60) {
         logger.info('FoundryVTT idle too long. Shutting down...');
         stopFoundry();
-        // TODO : Shutdown self
+        autoShutdown();
       }
     }
   }, 60000);
